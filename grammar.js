@@ -1,9 +1,7 @@
 module.exports = grammar({
   name: 'cpp2',
   rules: {
-    identifier: $ => /[a-zA-Z_][a-zA-Z_0-9]*/
-    ,
-
+    identifier: $ => /[a-zA-Z_][a-zA-Z_0-9]*/,
     string_literal: $ => seq(
       choice('L"', 'u"', 'U"', 'u8"', '"'),
       repeat(choice(
@@ -12,7 +10,6 @@ module.exports = grammar({
       )),
       '"',
     ),
-
     escape_sequence: _ => token(prec(1, seq(
       '\\',
       choice(
@@ -23,8 +20,6 @@ module.exports = grammar({
         /U[0-9a-fA-F]{8}/,
       ),
     ))),
-
-
     boolean_literal: $ => choice('true', 'false'),
     char_literal: $ => seq(
       choice('L\'', 'u\'', 'U\'', 'u8\'', '\''),
@@ -34,8 +29,6 @@ module.exports = grammar({
       ),
       '\'',
     ),
-
-
     number_literal: $ => {
       const sign = /[-\+]/;
       const separator = '\'';
@@ -85,11 +78,8 @@ module.exports = grammar({
         ),
       ));
     },
-
-
     literal_suffix: _ => token.immediate(/[a-zA-Z_]\w*/),
-
-        user_defined_literal: $ => seq(
+    user_defined_literal: $ => seq(
       choice(
         $.number_literal,
         $.char_literal,
@@ -97,9 +87,6 @@ module.exports = grammar({
       ),
       $.literal_suffix,
     ),
-
-
-
     source_file: $ => repeat($.declaration),
     primary_expression: $ => choice(
       $.inspect_expression, 
